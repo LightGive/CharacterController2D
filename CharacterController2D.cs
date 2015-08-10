@@ -42,7 +42,6 @@ public class CharacterController2D : MonoBehaviour
     private Rigidbody2D rigid = null;
     private Animator animator = null;
     private bool isDeath = false;
-    //private float lastDir = 1.0f;　//使用しない
 
     /// <summary>
     /// 開始処理
@@ -77,14 +76,13 @@ public class CharacterController2D : MonoBehaviour
     /// </summary>
     void Update()
     {
-        //Updateに統一
         if (isDeath)
             return;
 
         if (isInput)
             InputKey();
 
-        Animation(); //Inputの後ろに
+        Animation();
     }
 
     /// <summary>
@@ -92,9 +90,8 @@ public class CharacterController2D : MonoBehaviour
     /// </summary>
     void OnDrawGizmos()
     {
-        //プレイ中は邪魔になることもあるので非表示にできるようにしておくと良い気がします
-        //if (Application.isPlaying)
-        //    return;
+        if (Application.isPlaying)
+            return;
 
         Gizmos.color = Color.blue;
         Vector3 floorA = transform.position + new Vector3(-(charaWidth / 2), charaFoot);
@@ -111,14 +108,11 @@ public class CharacterController2D : MonoBehaviour
     /// </summary>
     void InputKey()
     {
-
-        //if (isDeath)
-        //    return;
-
         if (Input.GetButtonDown("Jump"))
             Jump();
-
-        //Move(Input.GetAxis("Horizontal")); //速度に緩急が出るように(お好み)
+            
+        //速度に緩急が出るように(お好み)
+        //Move(Input.GetAxis("Horizontal"));
         Move(Input.GetAxisRaw("Horizontal"));
 
     }
@@ -129,9 +123,6 @@ public class CharacterController2D : MonoBehaviour
     /// </summary>
     void Animation()
     {
-        //if (isDeath)
-        //    return;
-
         if (!isGranded())
             animator.Play(animNameJump);
         else if (rigid.velocity.x == 0.0f)
@@ -157,21 +148,12 @@ public class CharacterController2D : MonoBehaviour
     /// </summary>
     public void Move(float rightSpeed)
     {
-
-        //if (isDeath)
-        //    return;
-
         if (rightSpeed > 0)
             charaDir = CharacterDir.Right;
         else if (rightSpeed < 0)
             charaDir = CharacterDir.Left;
-
-        //lastDirを使わず、もともとあったenumを利用,　またif文は無くても機能するはず
-        //if (rightSpeed != 0.0f) 
-        //    lastDir = (rightSpeed == 0) ? lastDir : rightSpeed;
-
-
         var dir = rightSpeed * charaMoveSpeed;
+
 
         if (charaImageDir == CharacterDir.Right)
             transform.localScale = new Vector3((float)charaDir * charaScale, charaScale);
