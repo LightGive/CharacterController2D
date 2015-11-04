@@ -162,7 +162,7 @@ public class CharacterController2D : MonoBehaviour
 
         rigid.velocity = new Vector2(dir, rigid.velocity.y);
 
-
+        //頭に当たったとき、下に向かって力を加える
         if (isCeiling())
             rigid.velocity = new Vector2(rigid.velocity.x, charaCeilingBouness);
     }
